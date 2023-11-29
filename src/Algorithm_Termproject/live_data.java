@@ -5,19 +5,17 @@ import java.io.InputStreamReader;
 import java.util.*;
 import java.net.URL;
 
+import entity.ConzonNode;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import javafx.util.Pair;
-import entity.ConzonInfo;
-import util.EachNodes;
 import algorithms.Dfs;
-
+import util.ConzonInfo;
 
 
 public class live_data {
-	private final static String KEY = "";
+	private final static String KEY = "8820206620";
 	private final static String BASE_URL = "http://data.ex.co.kr/openapi/odtraffic/trafficAmountByRealtime?"
 			+ "key=" + KEY + "&type=json";
 	
@@ -65,7 +63,7 @@ public class live_data {
         		
         		/* 콘존 정보가 없는 경우 새롭게 추가한다 */
         		
-        		if(traffic.containsKey(conzoneID) == false) { 
+        		if(!traffic.containsKey(conzoneID)) {
         			traffic.put(conzoneID, timeAvg);
         			tCount.put(conzoneID, 1);
         		}
@@ -75,8 +73,8 @@ public class live_data {
         			tCount.put(conzoneID, tCount.get(conzoneID)+1);
         		}
         	}
-        	for(String s : traffic.keySet())
-        		traffic.put(s,traffic.get(s)/tCount.get(s));
+//        	for(String s : traffic.keySet())
+//        		traffic.put(s,traffic.get(s)/tCount.get(s));
     	}catch(Exception e) {
     		e.printStackTrace();
     	}
@@ -94,13 +92,15 @@ public class live_data {
 	
 	public static void main(String[] args) {
 		Map<String,Integer> traffic = getAverageTime();
+		ConzonInfo.initialize();
+		ConzonInfo.initialize(traffic);
 
-		EachNodes data = new EachNodes(traffic);
-		Map<Integer,String> conzon = data.getConzonDict(); // 지역 노드
-		List<List<ConzonInfo>> adj = data.getAdjacent(); // 지역 노드가 연결되어 있는 관계
+
+//		Map<Integer,String> conzon = ConzonInfo.getConzonDict(); // 지역 노드
+//		List<List<ConzonNode>> adj = ConzonInfo.getAdjacent(); // 지역 노드가 연결되어 있는 관계
 		
 		Dfs dfs = new Dfs();
-		List<String> list = dfs.getStart2End(142, 545, adj, conzon);
+		List<String> list = dfs.getStart2End(142, 545);
     	
 
 

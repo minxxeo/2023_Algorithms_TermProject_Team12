@@ -1,10 +1,10 @@
 package algorithms;
 
-import com.sun.javaws.IconUtil;
-import entity.ConzonInfo;
-
 import java.util.*;
+
+import entity.ConzonNode;
 import javafx.util.Pair;
+import util.ConzonInfo;
 
 public class Dfs
 {
@@ -14,8 +14,17 @@ public class Dfs
     private final List<List<ConzonNode>> adjacent;
     private final Map<Integer,String> conzonDict;
     private final Map<Integer,String> lineInfo;
-    public List<String> getStart2End(int from, int to, List<List<ConzonInfo>> adjacent, Map<Integer, String> conzonDict) {
-        dijkstra_speed(from, adjacent);
+
+    public Dfs()
+    {
+        this.adjacent = ConzonInfo.getAdjacent();
+        this.conzonDict = ConzonInfo.getConzonDict();
+        this.lineInfo = ConzonInfo.getLineInfo();
+
+    }
+
+    public List<String> getStart2End(int from, int to) {
+        dijkstra_speed(from);
         int totalTime = time[to];
         String result ="";
         if(totalTime/3600 != 0)result = totalTime/3600+"시간 ";
@@ -62,7 +71,7 @@ public class Dfs
         }
         return new Pair<>(dist[to],line);
     }
-    void dijkstra(int from, List<List<ConzonInfo>> adjacent) //By distance
+    void dijkstra(int from) //By distance
     {
         Arrays.fill(dist, 2147483647);
         Arrays.fill(prev_loc, 0);
@@ -72,7 +81,7 @@ public class Dfs
         while(!pq.isEmpty())
         {
             int cur = pq.poll().idx;
-            for(ConzonInfo curNode : adjacent.get(cur))
+            for(ConzonNode curNode : adjacent.get(cur))
             {
                 if(dist[curNode.getId()] > dist[cur] + curNode.getDist())
                 {
@@ -83,7 +92,7 @@ public class Dfs
             }
         }
     }
-    void dijkstra_speed(int from, List<List<ConzonInfo>> adjacent) //By distance
+    void dijkstra_speed(int from) //By distance
     {
         Arrays.fill(time, 2147483647);
         Arrays.fill(prev_loc, 0);
@@ -93,7 +102,7 @@ public class Dfs
         while(!pq.isEmpty())
         {
             int cur = pq.poll().idx;
-            for(ConzonInfo curNode : adjacent.get(cur))
+            for(ConzonNode curNode : adjacent.get(cur))
             {
                 if(time[curNode.getId()] > time[cur] + curNode.getTime())
                 {
@@ -103,6 +112,59 @@ public class Dfs
                 }
             }
         }
+    }
+
+    public void printRoute(List<Integer> line)
+    {
+        for (int i = line.size() - 1; i >= 0; i--)
+        {
+            System.out.print(conzonDict.get(line.get(i)) + (i != 0 ? " - " : "\n"));
+        }
+    }
+
+    public void printLine(List<Integer> line)
+    {
+        int cur = -1;
+        List<String> rst = new ArrayList<>();
+
+        for (int i = line.size() - 2; i >= 0; i--)
+        {
+            for(ConzonNode iter :adjacent.get(line.get(i)))
+            {
+                if(iter.getId() == line.get(i + 1) && iter.getLine() != cur)
+                {
+                    cur = iter.getLine();
+                    rst.add(lineInfo.get(cur));
+                }
+            }
+        }
+        for(int i = 0; i < rst.size(); i++)
+        {
+            System.out.print(rst.get(i) + (i != rst.size() -1 ? " - " : "\n"));
+        }
+    }
+    public int calcToll(List<Integer> line)
+    {
+        double cost = 44.3, rst = 0;
+        for (int i = line.size() - 2; i >= 0; i--)
+        {
+            for(ConzonNode iter :adjacent.get(line.get(i)))
+            {
+                if(iter.getId() == line.get(i + 1) )
+                {
+                    if(iter.getLanecnt() >= 6)
+                    {
+                        rst += (double)iter.getDist() / 1000 * cost * 1.2;
+                    }
+                    else
+                    {
+                        rst += (double)iter.getDist() / 1000  * cost;
+                    }
+                }
+            }
+        }
+        rst += 1800;
+        return (int)rst;
     }
 }
 class Node implements Comparable<Node>

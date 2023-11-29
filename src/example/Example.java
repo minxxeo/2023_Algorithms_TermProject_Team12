@@ -4,7 +4,6 @@ import algorithms.Calculator;
 import algorithms.Dfs;
 import javafx.util.Pair;
 import util.ConzonInfo;
-import util.EachNodes;
 
 import java.util.List;
 
@@ -28,6 +27,8 @@ public class Example
         System.out.println("toll = " + toll);
         int texi = Calculator.calcTexi(aToB.getKey());
         System.out.println("texi = " + (texi + toll));
+
+
     }
 
 }
