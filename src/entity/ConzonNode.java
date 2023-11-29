@@ -6,6 +6,17 @@ public class ConzonNode
     private final int dist;
     private final int line;
     private final int lanecnt;
+    private int time;
+
+    public void setTime(int time)
+    {
+        this.time = time;
+    }
+
+    public int getTime()
+    {
+        return time;
+    }
 
     public int getLanecnt()
     {
