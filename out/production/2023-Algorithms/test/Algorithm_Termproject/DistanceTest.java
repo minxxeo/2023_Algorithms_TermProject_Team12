@@ -24,6 +24,8 @@ public class DistanceTest
         Pair<Integer, List<Integer>> aToB = dfs.getStart2End(305, 209,1);
 
         System.out.println(ConzonInfo.getConzonDict().get(305) + "부터 " + ConzonInfo.getConzonDict().get(209) + "까지의 거리 : " + (double) aToB.getKey() / 1000 + "km");
+
+
         dfs.printRoute(aToB.getValue());
         dfs.printLine(aToB.getValue());
         int toll = dfs.calcToll(aToB.getValue());

@@ -22,9 +22,9 @@ class live_dataTest
 
         Dfs dfs = new Dfs();
 
-        int from = 272, to = 147;
+        int from = 305, to = 309;
         Pair<Integer, List<Integer>> start2End = dfs.getStart2End(from, to, 2);
-
+        Pair<Integer, List<Integer>> aToB = dfs.getStart2End(from, to,1);
         int totalTime = start2End.getKey();
         String result = "";
         if (totalTime / 3600 != 0) result = totalTime / 3600 + "시간 ";
@@ -49,14 +49,13 @@ class live_dataTest
                 }
             }
         }
-
-//        System.out.println("dist = " + dist);
         int texifee = Calculator.calcTexi(dist, totalTime);
         int toll = dfs.calcToll(value);
         dfs.printRoute(value);
         dfs.printLine(value);
         System.out.println("toll = " + toll);
-        System.out.println("dist = " + dist);
+        System.out.println("dist = " + dist / 1000);
+        System.out.println("가장 짧은 dist = " + aToB.getKey() / 1000);
         System.out.println("texifee = " +( texifee + toll));
     }
 
