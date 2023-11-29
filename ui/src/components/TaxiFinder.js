@@ -1,19 +1,21 @@
 // src/components/TaxiFinder.js
 import React, { useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
+import Map from "./Map";
 
 const TaxiFinder = () => {
   const [startLocation, setStartLocation] = useState(null);
   const [endLocation, setEndLocation] = useState(null);
   const [selectedMetric, setSelectedMetric] = useState("taxiFare");
+  const [result, setResult] = useState(null);
 
-  const handleMapClick = (e) => {
-    const { lat, lng } = e.latlng;
-    if (!startLocation) {
-      setStartLocation({ lat, lng });
-    } else {
-      setEndLocation({ lat, lng });
+  const handleMapClick = ({ latlng }) => {
+    if (latlng) {
+      const { lat, lng } = latlng;
+      if (!startLocation) {
+        setStartLocation({ lat, lng });
+      } else {
+        setEndLocation({ lat, lng });
+      }
     }
   };
 
@@ -34,17 +36,7 @@ const TaxiFinder = () => {
 
   const handleFindTaxi = () => {
     const metrics = calculateMetrics();
-    console.log(`최소 ${selectedMetric}:`, metrics[selectedMetric]);
-
-    // 여기에서 외부 API 호출로 변경 가능
-    // axios.get('/api/pathfinding', { params: { startLocation, endLocation } })
-    //   .then((response) => {
-    //     const metrics = response.data;
-    //     console.log(`최소 ${selectedMetric}:`, metrics[selectedMetric]);
-    //   })
-    //   .catch((error) => {
-    //     console.error('API 호출 오류:', error);
-    //   });
+    setResult(`최소 ${selectedMetric}: ${metrics[selectedMetric]}`);
   };
 
   return (
@@ -67,27 +59,11 @@ const TaxiFinder = () => {
           </label>
           <input type="text" placeholder="도착지 입력" />
         </div>
-        <MapContainer
-          center={[37.5665, 126.978]}
-          zoom={13}
-          style={{ height: "300px", width: "400px" }}
+        <Map
           onClick={handleMapClick}
-        >
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          />
-          {startLocation && (
-            <Marker position={startLocation}>
-              <Popup>출발지</Popup>
-            </Marker>
-          )}
-          {endLocation && (
-            <Marker position={endLocation}>
-              <Popup>도착지</Popup>
-            </Marker>
-          )}
-        </MapContainer>
+          startLocation={startLocation}
+          endLocation={endLocation}
+        />
       </div>
       <div style={{ marginBottom: "20px" }}>
         <label style={{ display: "block", marginBottom: "10px" }}>
@@ -130,9 +106,9 @@ const TaxiFinder = () => {
         </div>
       </div>
       <button onClick={handleFindTaxi}>택시 찾기</button>
-      <div style={{ marginTop: "20px", textAlign: "center" }}>
-        <p>최소 {selectedMetric}: 결과값</p>
-      </div>
+      {result && (
+        <div style={{ marginTop: "20px", textAlign: "center" }}>{result}</div>
+      )}
     </div>
   );
 };
