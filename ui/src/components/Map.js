@@ -6,12 +6,13 @@ const Map = ({ onClick }) => {
 
   useEffect(() => {
     const loadKakaoMapScript = () => {
-      return new Promise((resolve) => {
+      return new Promise((resolve, reject) => {
         const script = document.createElement("script");
         script.src =
           "//dapi.kakao.com/v2/maps/sdk.js?appkey=da112912a21c56cd0a11eb26da6aaebd";
         script.async = true;
         script.onload = resolve;
+        script.onerror = reject; // Handle script loading error
         document.head.appendChild(script);
       });
     };
@@ -31,7 +32,7 @@ const Map = ({ onClick }) => {
 
         const content = `
           <div class="customoverlay">
-            <span>포썸</span>
+            <span>가천대학교</span>
           </div>`;
 
         new kakao.maps.CustomOverlay({
@@ -70,7 +71,7 @@ const Map = ({ onClick }) => {
     <div
       id="map"
       ref={mapContainer}
-      style={{ width: "100%", height: "400px", display: "block" }}
+      style={{ width: "500px", height: "500px", display: "block" }}
       onClick={onClick}
     ></div>
   );
