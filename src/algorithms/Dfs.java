@@ -1,8 +1,8 @@
 package algorithms;
 
-import entity.ConzonInfo;
+import entity.ConzonNode;
 import javafx.util.Pair;
-import util.EachNodes;
+import util.ConzonInfo;
 
 import java.util.*;
 
@@ -10,15 +10,15 @@ public class Dfs
 {
     int[] dist = new int[1100];
     int[] prev_loc = new int[1100];
-    private final List<List<ConzonInfo>> adjacent;
+    private final List<List<ConzonNode>> adjacent;
     private final Map<Integer,String> conzonDict;
     private final Map<Integer,String> lineInfo;
 
-    public Dfs(EachNodes entity)
+    public Dfs()
     {
-        adjacent = entity.getAdjacent();
-        conzonDict = entity.getConzonDict();
-        lineInfo = entity.getLineInfo();
+        adjacent = ConzonInfo.getAdjacent();
+        conzonDict = ConzonInfo.getConzonDict();
+        lineInfo = ConzonInfo.getLineInfo();
     }
 
     public Pair<Integer, List<Integer>> find_A_to_B(int from, int to )
@@ -47,7 +47,7 @@ public class Dfs
         while(!pq.isEmpty())
         {
             int cur = pq.poll().idx;
-            for(ConzonInfo curNode : adjacent.get(cur))
+            for(ConzonNode curNode : adjacent.get(cur))
             {
                 if(dist[curNode.getId()] > dist[cur] + curNode.getDist())
                 {
@@ -73,7 +73,7 @@ public class Dfs
 
         for (int i = line.size() - 2; i >= 0; i--)
         {
-            for(ConzonInfo iter :adjacent.get(line.get(i)))
+            for(ConzonNode iter :adjacent.get(line.get(i)))
             {
                 if(iter.getId() == line.get(i + 1) && iter.getLine() != cur)
                 {
@@ -92,7 +92,7 @@ public class Dfs
         double cost = 44.3, rst = 0;
         for (int i = line.size() - 2; i >= 0; i--)
         {
-            for(ConzonInfo iter :adjacent.get(line.get(i)))
+            for(ConzonNode iter :adjacent.get(line.get(i)))
             {
                 if(iter.getId() == line.get(i + 1) )
                 {

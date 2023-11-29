@@ -21,6 +21,7 @@ public class Example
         //Pair 최소거리, 최소거리의 루트
         Pair<Integer, List<Integer>> aToB = dfs.find_A_to_B(305, 209);
         System.out.println(eachNodes.getConzonDict().get(305) + "부터 " + eachNodes.getConzonDict().get(209) + "까지의 거리 : " + (double) aToB.getKey() / 1000 + "km");
+        dfs.printRoute(aToB.getValue());
         dfs.printLine(aToB.getValue());
         int toll = dfs.calcToll(aToB.getValue());
         System.out.println("toll = " + toll);

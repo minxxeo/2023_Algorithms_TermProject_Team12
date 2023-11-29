@@ -1,6 +1,6 @@
 package entity;
 
-public class ConzonInfo
+public class ConzonNode
 {
     private final int id;
     private final int dist;
@@ -27,7 +27,7 @@ public class ConzonInfo
         return line;
     }
 
-    public ConzonInfo(int id, int dist, int line, int lanecnt)
+    public ConzonNode(int id, int dist, int line, int lanecnt)
     {
         this.id = id;
         this.dist = dist;
