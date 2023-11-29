@@ -17,7 +17,7 @@ import algorithms.Dfs;
 
 
 public class live_data {
-	private final static String KEY = "8820206620";
+	private final static String KEY = "";
 	private final static String BASE_URL = "http://data.ex.co.kr/openapi/odtraffic/trafficAmountByRealtime?"
 			+ "key=" + KEY + "&type=json";
 	
