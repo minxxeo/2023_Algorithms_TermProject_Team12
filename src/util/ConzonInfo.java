@@ -1,6 +1,6 @@
 package util;
 
-import entity.ConzonInfo;
+import entity.ConzonNode;
 import javafx.util.Pair;
 
 import java.io.*;
@@ -9,13 +9,14 @@ import java.util.stream.Stream;
 
 import static java.util.Collections.sort;
 
-public class EachNodes
+public class ConzonInfo
 {
-    private final Map<Integer, String> conzonDict;
-    private final List<List<ConzonInfo>> adjacent;
-    private final Map<String, Pair<Integer, Integer>> conzonID;
-    private final Map<Integer, String> lineInfo;
-    public EachNodes()
+    static private Map<Integer, String> conzonDict;
+    static private List<List<ConzonNode>> adjacent;
+    static private Map<String, Pair<Integer, Integer>> conzonID;
+    static private Map<Integer, String> lineInfo;
+
+    static public void initialize()
     {
         try
         {
@@ -23,21 +24,21 @@ public class EachNodes
             conzonDict = new HashMap<>();
             adjacent = new ArrayList<>();
             conzonID = new HashMap<>();
-            for (int i = 0 ; i < 1100; i++)
+            for (int i = 0; i < 1100; i++)
             {
                 adjacent.add(new ArrayList<>());
             }
 
             Stream<String> lines = br.lines();
             br.readLine();
-            lines.forEach(this::parse_conzon);
+            lines.forEach(ConzonInfo::parse_conzon);
             br.close();
 
             BufferedReader lineBr = new BufferedReader(new InputStreamReader(new FileInputStream("assets/line_info.csv"), "EUC-KR"));
             lineInfo = new HashMap<>();
             lines = lineBr.lines();
             lineBr.readLine();
-            lines.forEach(this::parse_line);
+            lines.forEach(ConzonInfo::parse_line);
             lineBr.close();
 
         } catch (IOException e)
@@ -45,7 +46,8 @@ public class EachNodes
             throw new RuntimeException(e);
         }
     }
-    void parse_conzon(String str)
+
+    static void parse_conzon(String str)
     {
         String[] element = str.split(",");
         try
@@ -54,45 +56,50 @@ public class EachNodes
             String par = element[9];
             String[] split = par.split("-");
 
-            if(!conzonDict.containsKey(idx))
+            if (!conzonDict.containsKey(idx))
                 conzonDict.put(idx, split[0]);
 
             int from = Integer.parseInt(element[3]);
             int to = Integer.parseInt(element[4]);
-            int dist = (int)Double.parseDouble(element[1]);
-            int line = (int)Double.parseDouble(element[6]);
-            int lanecnt = (int)Double.parseDouble(element[5]);
-            adjacent.get(from).add(new ConzonInfo(to, dist, line, lanecnt));
+            int dist = (int) Double.parseDouble(element[1]);
+            int line = (int) Double.parseDouble(element[6]);
+            int lanecnt = (int) Double.parseDouble(element[5]);
+            adjacent.get(from).add(new ConzonNode(to, dist, line, lanecnt));
 
             conzonID.put(element[0], new Pair<>(from, to));
-        }catch (NumberFormatException ignored) {}
+        } catch (NumberFormatException ignored)
+        {
+        }
     }
-    void parse_line(String str)
+
+    static void parse_line(String str)
     {
         String[] element = str.split(",");
         try
         {
             int line = Integer.parseInt(element[0]);
             lineInfo.put(line, element[1]);
-        }catch (NumberFormatException ignored) {}
+        } catch (NumberFormatException ignored)
+        {
+        }
     }
 
-    public Map<Integer, String> getLineInfo()
+    public static Map<Integer, String> getLineInfo()
     {
         return lineInfo;
     }
 
-    public Map<Integer, String> getConzonDict()
+    public static Map<Integer, String> getConzonDict()
     {
         return conzonDict;
     }
 
-    public List<List<ConzonInfo>> getAdjacent()
+    public static List<List<ConzonNode>> getAdjacent()
     {
         return adjacent;
     }
 
-    public Map<String, Pair<Integer, Integer>> getConzonID()
+    public static Map<String, Pair<Integer, Integer>> getConzonID()
     {
         return conzonID;
     }
