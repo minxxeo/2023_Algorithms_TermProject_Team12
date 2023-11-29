@@ -1,20 +1,17 @@
-package Algorithm_Termproject;
+package util;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.*;
 import java.net.URL;
 
-import entity.ConzonNode;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import algorithms.Dfs;
-import util.ConzonInfo;
 
-
-public class live_data {
+public class LiveData
+{
 	private final static String KEY = "8820206620";
 	private final static String BASE_URL = "http://data.ex.co.kr/openapi/odtraffic/trafficAmountByRealtime?"
 			+ "key=" + KEY + "&type=json";
@@ -44,6 +41,7 @@ public class live_data {
 	
 	// 실시간 데이터를 바탕으로 걸리는 평균 시간을 구한다.
 	public static Map<String,Integer> getAverageTime() {
+		System.out.println("Fetching realtime data");
     	JSONArray list = getListComponent();
 
     	Map<String,Integer> traffic = new HashMap<String,Integer>();
@@ -73,6 +71,7 @@ public class live_data {
         			tCount.put(conzoneID, tCount.get(conzoneID)+1);
         		}
         	}
+			System.out.println("Finished");
 //        	for(String s : traffic.keySet())
 //        		traffic.put(s,traffic.get(s)/tCount.get(s));
     	}catch(Exception e) {
@@ -80,31 +79,6 @@ public class live_data {
     	}
     	return traffic;
 	}
-	
-	public static void printConzonSpeedInfo(Map<String,Integer> t) {
-		int i = 0;
-		for(String s : t.keySet()) {
-			System.out.println(i+". " + s + ": " + t.get(s));
-			i += 1;
-		}
-			
-	}
-	
-	public static void main(String[] args) {
-		Map<String,Integer> traffic = getAverageTime();
-		ConzonInfo.initialize();
-		ConzonInfo.initialize(traffic);
-
-
-//		Map<Integer,String> conzon = ConzonInfo.getConzonDict(); // 지역 노드
-//		List<List<ConzonNode>> adj = ConzonInfo.getAdjacent(); // 지역 노드가 연결되어 있는 관계
-		
-		Dfs dfs = new Dfs();
-		List<String> list = dfs.getStart2End(142, 545);
-    	
-
-
-    }
 }
 
 

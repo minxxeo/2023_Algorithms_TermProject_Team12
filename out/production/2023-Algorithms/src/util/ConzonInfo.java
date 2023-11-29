@@ -115,7 +115,7 @@ public class ConzonInfo
                 time = t.get(par);
             } else
             {
-                time = (int) ((dist / Double.parseDouble(element[7])) * 3600 / 1000);
+                time = (int) ((dist / (Double.parseDouble(element[7])-20)) * 3600 / 1000);
             }
 
             for (ConzonNode iter : adjacent.get(from))
