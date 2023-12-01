@@ -22,7 +22,7 @@ class live_dataTest
 
         Dfs dfs = new Dfs();
 
-        int from = 305, to = 309;
+        int from = 258, to = 498;
         Pair<Integer, List<Integer>> start2End = dfs.getStart2End(from, to, 2);
         Pair<Integer, List<Integer>> aToB = dfs.getStart2End(from, to,1);
         int totalTime = start2End.getKey();

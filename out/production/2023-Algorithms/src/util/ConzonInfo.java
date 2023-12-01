@@ -11,10 +11,11 @@ import static java.util.Collections.sort;
 
 public class ConzonInfo
 {
-    static private Map<Integer, String> conzonDict;
+    static private Map<Integer, ConzonNameLoc> conzonDict;
     static private List<List<ConzonNode>> adjacent;
     static private Map<String, Pair<Integer, Integer>> conzonID;
     static private Map<Integer, String> lineInfo;
+    static private int[][] linedist = new int[1100][1100];
 
     static public void initialize()
     {
@@ -41,6 +42,22 @@ public class ConzonInfo
             lines.forEach(ConzonInfo::parse_line);
             lineBr.close();
 
+            BufferedReader conzonloc = new BufferedReader(new InputStreamReader(new FileInputStream("assets/conzonloc.csv"), "UTF-8"));
+            lines = conzonloc.lines();
+            conzonloc.readLine();
+            lines.forEach(ConzonInfo::parse_location);
+            conzonloc.close();
+
+
+            Set<Integer> keys = getConzonDict().keySet();
+            Set<Integer> finalKeys1 = keys;
+            keys.forEach(iter->{
+
+            finalKeys1.forEach(iter2 ->{
+                linedist[iter][iter2] =distance(conzonDict.get(iter).getX(), conzonDict.get(iter).getY(), conzonDict.get(iter2).getX(),conzonDict.get(iter2).getY());
+            });
+            });
+
         } catch (IOException e)
         {
             throw new RuntimeException(e);
@@ -66,7 +83,23 @@ public class ConzonInfo
             throw new RuntimeException(e);
         }
     }
+    private static double deg2rad(double deg){
+        return (deg * Math.PI/180.0);
+    }
+    //radian(라디안)을 10진수로 변환
+    private static double rad2deg(double rad){
+        return (rad * 180 / Math.PI);
+    }
 
+    private static int distance(double lat1, double lon1, double lat2, double lon2){
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1))* Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1))*Math.cos(deg2rad(lat2))*Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60*1.1515*1609.344;
+
+        return (int)dist; //단위 meter
+    }
 
     static void parse_conzon(String str)
     {
@@ -78,7 +111,8 @@ public class ConzonInfo
             String[] split = par.split("-");
 
             if (!conzonDict.containsKey(idx))
-                conzonDict.put(idx, split[0]);
+                conzonDict.put(idx, new ConzonNameLoc(split[0],0,0));
+
 
             int from = Integer.parseInt(element[3]);
             int to = Integer.parseInt(element[4]);
@@ -88,6 +122,22 @@ public class ConzonInfo
             adjacent.get(from).add(new ConzonNode(to, dist, line, lanecnt));
 
             conzonID.put(element[0], new Pair<>(from, to));
+        } catch (NumberFormatException ignored)
+        {
+        }
+    }
+
+    static void parse_location(String str)
+    {
+        String[] element = str.split(",");
+        try
+        {
+            String name = (element[15].replaceAll("\"", ""));
+            double x =Double.parseDouble (element[16].replaceAll("\"", ""));
+            double y = Double.parseDouble (element[17].replaceAll("\"", ""));
+
+            int keyByValue = getKeyByValue(conzonDict, name);
+            conzonDict.replace(keyByValue, new ConzonNameLoc(name, x,y));
         } catch (NumberFormatException ignored)
         {
         }
@@ -103,7 +153,7 @@ public class ConzonInfo
             String[] split = par.split("-");
 
             if (!conzonDict.containsKey(idx))
-                conzonDict.put(idx, split[0]);
+                conzonDict.put(idx, new ConzonNameLoc(split[0], 0, 0) );
 
             int from = Integer.parseInt(element[3]);
             int to = Integer.parseInt(element[4]);
@@ -142,13 +192,23 @@ public class ConzonInfo
         {
         }
     }
-
+    public static int getKeyByValue(Map<Integer, ConzonNameLoc> map, String value) {
+        int findKey = -1;
+        for(Map.Entry<Integer, ConzonNameLoc> entry : map.entrySet()){
+            // 동일한 값이 있으면 반복문을 종료합니다.
+            if(entry.getValue().getName().equals(value)) {
+                findKey = entry.getKey();
+                break;
+            }
+        }
+        return findKey;
+    }
     public static Map<Integer, String> getLineInfo()
     {
         return lineInfo;
     }
 
-    public static Map<Integer, String> getConzonDict()
+    public static Map<Integer, ConzonNameLoc> getConzonDict()
     {
         return conzonDict;
     }
@@ -161,6 +221,11 @@ public class ConzonInfo
     public static Map<String, Pair<Integer, Integer>> getConzonID()
     {
         return conzonID;
+    }
+
+    public static int[][] getLinedist()
+    {
+        return linedist;
     }
 }
 
