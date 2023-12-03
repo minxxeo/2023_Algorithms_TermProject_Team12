@@ -1,5 +1,4 @@
-// src/entity/ConzonNode.js
-
+// entity/ConzonNode.js
 class ConzonNode {
   constructor(id, dist, line, lanecnt) {
     this.id = id;

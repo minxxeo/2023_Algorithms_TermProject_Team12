@@ -1,80 +1,70 @@
 // Map.js
 import React, { useEffect, useRef } from "react";
+import { ConzoneCoordinates, ConzoneRoute } from "./ConzoneCoordinates";
 
-const Map = ({ onClick }) => {
+const Map = ({ startLocation, endLocation }) => {
   const mapContainer = useRef(null);
 
   useEffect(() => {
-    const loadKakaoMapScript = () => {
-      return new Promise((resolve, reject) => {
-        const script = document.createElement("script");
-        script.src =
-          "//dapi.kakao.com/v2/maps/sdk.js?appkey=da112912a21c56cd0a11eb26da6aaebd";
-        script.async = true;
-        script.onload = resolve;
-        script.onerror = reject; // Handle script loading error
-        document.head.appendChild(script);
-      });
-    };
-
     const initializeMap = () => {
       try {
         const { kakao } = window;
         const position = new kakao.maps.LatLng(37.450805, 127.128954);
 
-        const map = new kakao.maps.Map(mapContainer.current, {
+        window.map = new kakao.maps.Map(mapContainer.current, {
           center: position,
           level: 4,
         });
 
-        const marker = new kakao.maps.Marker({ position });
-        marker.setMap(map);
+        // 마커 그리기
+        const markerOptions = { clickable: true };
+        const markers = Object.entries(ConzoneCoordinates).map(
+          ([name, coord]) => {
+            const markerPosition = new kakao.maps.LatLng(coord.lat, coord.lng);
+            const marker = new kakao.maps.Marker({
+              position: markerPosition,
+              clickable: markerOptions.clickable,
+            });
 
-        const content = `
-          <div class="customoverlay">
-            <span>가천대학교</span>
-          </div>`;
+            marker.setMap(window.map);
 
-        new kakao.maps.CustomOverlay({
-          map,
-          position,
-          content: content,
+            return { name, marker };
+          }
+        );
+
+        // 인포윈도우 설정
+        const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+
+        markers.forEach(({ name, marker }) => {
+          kakao.maps.event.addListener(marker, "click", () => {
+            infowindow.setContent(name);
+            infowindow.open(window.map, marker);
+          });
         });
+
+        // 경로 그리기
+        const linePath = Object.values(ConzoneRoute).map(
+          ({ lat, lng }) => new kakao.maps.LatLng(lat, lng)
+        );
+
+        const polyline = new kakao.maps.Polyline({
+          path: linePath,
+          strokeWeight: 5,
+          strokeColor: "red",
+          strokeOpacity: 0.7,
+          strokeStyle: "solid",
+        });
+
+        polyline.setMap(window.map);
       } catch (error) {
         console.error("지도 초기화 오류: ", error);
       }
     };
 
-    const initialize = async () => {
-      try {
-        if (!window.kakao) {
-          console.log("Kakao 지도 SDK 로딩 중...");
-          await loadKakaoMapScript();
-        }
+    initializeMap();
+  }, [startLocation, endLocation]);
 
-        // Kakao 지도 SDK 로딩 후 초기화 작업 수행
-        if (window.kakao) {
-          console.log("Kakao 지도 SDK 로딩 완료. 초기화 중...");
-          initializeMap();
-        } else {
-          console.error("Kakao 지도 SDK 로드 실패.");
-        }
-      } catch (error) {
-        console.error("초기화 오류:", error);
-      }
-    };
-
-    initialize();
-  }, []);
-
-  return (
-    <div
-      id="map"
-      ref={mapContainer}
-      style={{ width: "500px", height: "500px", display: "block" }}
-      onClick={onClick}
-    ></div>
-  );
+  return <div className="map-container" ref={mapContainer}></div>;
 };
 
 export default Map;
