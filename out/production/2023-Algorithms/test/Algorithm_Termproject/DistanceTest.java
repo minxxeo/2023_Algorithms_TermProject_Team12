@@ -32,21 +32,21 @@ public class DistanceTest
         ConzonInfo.initialize();
 
         Dfs dfs = new Dfs();
-        //Pair ìµœì†Œê±°ë¦¬, ìµœì†Œê±°ë¦¬ì˜ ë£¨íŠ¸
+        //Pair ÃÖ¼Ò°Å¸®, ÃÖ¼Ò°Å¸®ÀÇ ·çÆ®
         System.out.println("==============Dijkstra==============");
         long startTime = System.nanoTime();
         Set<Integer> keys = ConzonInfo.getConzonDict().keySet();
         Set<Integer> finalKeys1 = keys;
         keys.forEach(iter->{
-            dfs.getStart2End(iter, 498, 1);
             finalKeys1.forEach(iter2 ->{
                 dfs.getStart2End(iter, iter2, 1);
+
             });
         });
         long endTime = System.nanoTime();
         long elapsedTime = endTime - startTime;
         double seconds = (double) elapsedTime / 1_000_000_000.0;
-        System.out.println("ê²½ê³¼ ì‹œê°„: " + seconds + " ì´ˆ");
+        System.out.println("°æ°ú ½Ã°£: " + seconds + " ÃÊ");
 
 
         System.out.println("==============A*==============");
@@ -61,8 +61,8 @@ public class DistanceTest
         endTime = System.nanoTime();
         elapsedTime = endTime - startTime;
         seconds = (double) elapsedTime / 1_000_000_000.0;
-        System.out.println("ê²½ê³¼ ì‹œê°„: " + seconds + " ì´ˆ");
-        System.out.println("í˜¸ì¶œ íšŸìˆ˜: " + keys.size() * keys.size());
+        System.out.println("°æ°ú ½Ã°£: " + seconds + " ÃÊ");
+        System.out.println("È£Ãâ È½¼ö: " + keys.size() * keys.size());
 
     }
 }
