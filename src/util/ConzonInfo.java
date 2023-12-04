@@ -63,7 +63,15 @@ public class ConzonInfo
             throw new RuntimeException(e);
         }
     }
-
+    
+    /*
+     * Name        : initialize
+     * Author      : Junseo Choi
+     * Date        : 2023-11-28
+     * argument    : Map<String, Integer>
+     * return      : void
+     * description : Initialize a conzone node graph using the real-time current speed received through the API.
+    */
     static public void initialize(Map<String, Integer> t)
     {
         try
@@ -143,6 +151,15 @@ public class ConzonInfo
         }
     }
 
+    /*
+     * Name        : parse_conzon_t
+     * Author      : Junseo Choi
+     * Date        : 2023-11-28
+     * argument    : String, Map<String, Integer>
+     * return      : void
+     * description : If the time taken between conzones is measured by VDS, set it to the current speed. 
+     * 			     If there is no data, set it to the default speed.
+    */
     static void parse_conzon_t(String str, Map<String, Integer> t)
     {
         String[] element = str.split(",");
@@ -228,4 +245,3 @@ public class ConzonInfo
         return linedist;
     }
 }
-

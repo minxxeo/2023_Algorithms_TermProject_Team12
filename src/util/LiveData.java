@@ -14,7 +14,14 @@ public class LiveData
     private final static String BASE_URL = "http://data.ex.co.kr/openapi/odtraffic/trafficAmountByRealtime?"
             + "key=" + KEY + "&type=json";
 
-    // 실시간 소통 데이터 json api에서 list에 해당하는 정보를 가져온다
+    /*
+     * Name        : getListComponent
+     * Author      : Junseo Choi
+     * Date        : 2023-11-26
+     * argument    : none
+     * return      : JSONArray
+     * description : Receives a list of current speed measured by VDS for each highway section through API.
+    */
     public static JSONArray getListComponent()
     {
         JSONArray list = null;
@@ -39,8 +46,15 @@ public class LiveData
         }
         return list;
     }
-
-    // 실시간 데이터를 바탕으로 걸리는 평균 시간을 구한다.
+    
+    /*
+     * Name        : getAverageTime
+     * Author      : Junseo Choi
+     * Date        : 2023-11-28
+     * argument    : none
+     * return      : Map<String, Integer>
+     * description : Calculate the current speed of each section of the highway in JSONArray format.
+    */
     public static Map<String, Integer> getAverageTime()
     {
         System.out.println("Fetching realtime data");
@@ -77,8 +91,7 @@ public class LiveData
                 }
             }
             System.out.println("Finished");
-//        	for(String s : traffic.keySet())
-//        		traffic.put(s,traffic.get(s)/tCount.get(s));
+
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -86,5 +99,3 @@ public class LiveData
         return traffic;
     }
 }
-
-

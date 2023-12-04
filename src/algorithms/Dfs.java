@@ -23,7 +23,15 @@ public class Dfs
         this.lineInfo = ConzonInfo.getLineInfo();
 
     }
-
+    
+    /*
+     * Name        : getStart2End
+     * Author      : Junseo Choi
+     * Date        : 2023-11-27
+     * argument    : int, int ,int
+     * return      : Pair<Integer, List<Integer>>
+     * description : Calculate the fastest time from departure point to arrival point using Dijkstra's algorithm.
+    */
     public Pair<Integer, List<Integer>> getStart2End(int from, int to, int mode)
     {
         dijkstra(from, mode);
@@ -122,7 +130,7 @@ public class Dfs
 
     public void printLine(List<Integer> line)
     {
-        System.out.print("³ë¼± : ");
+        System.out.print("ï¿½ë¼± : ");
         int cur = -1;
         List<String> rst = new ArrayList<>();
 
@@ -145,7 +153,7 @@ public class Dfs
 
     public int calcToll(List<Integer> line)
     {
-        System.out.print("°æ·Î : ");
+        System.out.print("ï¿½ï¿½ï¿½ : ");
         double cost = 44.3, rst = 0;
         for (int i = line.size() - 2; i >= 0; i--)
         {
