@@ -8,11 +8,26 @@ public class ConzonNode
     private final int lanecnt;
     private int time;
 
+    /*
+     * Name        : setTime
+     * Author      : Junseo Choi
+     * Date        : 2023-11-27
+     * argument    : int
+     * return      : void
+     * description : Set the time between two highway conzones.
+    */
     public void setTime(int time)
     {
         this.time = time;
-    }
-
+    }   
+    /*
+     * Name        : getTime
+     * Author      : Junseo Choi
+     * Date        : 2023-11-27
+     * argument    : none
+     * return      : int
+     * description : Gets the time taken between two highway conzones.
+    */
     public int getTime()
     {
         return time;
