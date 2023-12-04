@@ -50,7 +50,7 @@ class live_dataTest
             }
         }
         int texifee = Calculator.calcTexi(dist, totalTime);
-        int toll = dfs.calcToll(value);
+        int toll = Calculator.calcToll(aToB.getValue(), ConzonInfo.getAdjacent());
         dfs.printRoute(value);
         dfs.printLine(value);
         System.out.println("톨게이트 비용 = " + toll);

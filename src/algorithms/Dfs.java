@@ -1,17 +1,16 @@
 package algorithms;
 
-import java.util.*;
-
 import entity.ConzonNode;
 import javafx.util.Pair;
 import util.ConzonInfo;
 import util.ConzonNameLoc;
 
+import java.util.*;
+
 public class Dfs
 {
     int[] dist = new int[1100];
     int[] prev_loc = new int[1100];
-    int[] time = new int[1100];
     private final List<List<ConzonNode>> adjacent;
     private final Map<Integer, ConzonNameLoc> conzonDict;
     private final Map<Integer, String> lineInfo;
@@ -21,9 +20,7 @@ public class Dfs
         this.adjacent = ConzonInfo.getAdjacent();
         this.conzonDict = ConzonInfo.getConzonDict();
         this.lineInfo = ConzonInfo.getLineInfo();
-
     }
-    
     /*
      * Name        : getStart2End
      * Author      : Junseo Choi
@@ -46,6 +43,14 @@ public class Dfs
         }
         return new Pair<>(dist[to], line);
     }
+    /*
+     * Name        : getStart2EndWithAStar
+     * Author      : MinSeok Choi
+     * Date        : 2023-11-27
+     * argument    : int, int, int
+     * return      : Pair<Integer, List<Integer>>
+     * description : Get the shortest path from A to B.
+     */
     public Pair<Integer, List<Integer>> getStart2EndWithAStar(int from, int to, int mode)
     {
         aStar(from, to);
@@ -60,7 +65,14 @@ public class Dfs
         }
         return new Pair<>(dist[to], line);
     }
-
+    /*
+     * Name        : dijkstra
+     * Author      : MinSeok Choi
+     * Date        : 2023-11-27
+     * argument    : int, int
+     * return      : void
+     * description : Get the shortest path from A to B. (Dijkstra algorithm)
+     */
     void dijkstra(int from, int mode) //By distance mode 1 : dist, mode 2 : time
     {
         Arrays.fill(dist, 2147483647);
@@ -87,7 +99,14 @@ public class Dfs
             }
         }
     }
-
+    /*
+     * Name        : aStar
+     * Author      : MinSeok Choi
+     * Date        : 2023-11-27
+     * argument    : int, int
+     * return      : void
+     * description : Get the shortest path from A to B. (A* algorithm)
+     */
     void aStar(int from, int to)
     {
         Arrays.fill(dist, 2147483647);
@@ -117,7 +136,14 @@ public class Dfs
             }
         }
     }
-
+    /*
+     * Name        : printRoute
+     * Author      : MinSeok Choi
+     * Date        : 2023-11-27
+     * argument    : List<Integer>
+     * return      : void
+     * description : Prints IC/JC that user should pass.
+     */
     public void printRoute(List<Integer> line)
     {
         for (int i = line.size() - 1; i >= 0; i--)
@@ -127,10 +153,17 @@ public class Dfs
             System.out.print(conzonDict.get(line.get(i)).getName() + (i != 0 ? " - " : "\n"));
         }
     }
-
+    /*
+     * Name        : printLine
+     * Author      : MinSeok Choi
+     * Date        : 2023-11-27
+     * argument    : List<Integer>
+     * return      : void
+     * description : Prints lines that user should pass.
+     */
     public void printLine(List<Integer> line)
     {
-        System.out.print("�뼱 : ");
+        System.out.print("?? : ");
         int cur = -1;
         List<String> rst = new ArrayList<>();
 
@@ -150,33 +183,8 @@ public class Dfs
             System.out.print(rst.get(i) + (i != rst.size() - 1 ? " - " : "\n"));
         }
     }
-
-    public int calcToll(List<Integer> line)
-    {
-        System.out.print("��� : ");
-        double cost = 44.3, rst = 0;
-        for (int i = line.size() - 2; i >= 0; i--)
-        {
-            for (ConzonNode iter : adjacent.get(line.get(i)))
-            {
-                if (iter.getId() == line.get(i + 1))
-                {
-                    if (iter.getLanecnt() >= 6)
-                    {
-                        rst += (double) iter.getDist() / 1000 * cost * 1.2;
-                    } else
-                    {
-                        rst += (double) iter.getDist() / 1000 * cost;
-                    }
-                }
-            }
-        }
-        rst += 1800;
-        return (int) rst;
-    }
-
 }
-
+/*Node for Graph*/
 class Node implements Comparable<Node>
 {
     int idx;

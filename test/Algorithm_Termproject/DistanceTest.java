@@ -21,7 +21,7 @@ public class DistanceTest
 
         Dfs dfs = new Dfs();
         Pair<Integer, List<Integer>> aToB = dfs.getStart2EndWithAStar(498, 30, 1);
-        int toll = dfs.calcToll(aToB.getValue());
+        int toll = Calculator.calcToll(aToB.getValue(), ConzonInfo.getAdjacent());
         System.out.println("toll = " + toll);
         int texi = Calculator.calcTexi(aToB.getKey(), 100010);
         System.out.println("texi = " + (texi + toll));
