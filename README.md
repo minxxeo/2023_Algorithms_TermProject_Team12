@@ -8,8 +8,8 @@ User can find shortest way with live data.
 * Conzon Data : [Link](https://www.bigdata-transportation.kr/frn/prdt/detail?prdtId=PRDTNUM_000000000009)   
    
 **Result of GUI**  
-![img](https://github.com/One-HyeWon/2023-Algorithms/blob/main/assets/JS%20result.png?raw=true)   
+![img](https://github.com/One-HyeWon/2023-Algorithms/blob/main/assets/JS%20result.png?raw=true)      
 **Result of 부곡IC to 서부산TG**   
-![img](https://github.com/One-HyeWon/2023-Algorithms/blob/main/assets/result.png?raw=true)   
-**We used Dijkstra and A* Algorithm.**   
+![img](https://github.com/One-HyeWon/2023-Algorithms/blob/main/assets/result.png?raw=true)      
+****Dijkstra and A* algorithm's comparison.****   
 ![img](https://github.com/One-HyeWon/2023-Algorithms/blob/main/assets/Astar%20vs%20dijkstra.png?raw=true)   
