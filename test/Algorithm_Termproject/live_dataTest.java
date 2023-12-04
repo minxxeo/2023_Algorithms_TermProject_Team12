@@ -27,12 +27,12 @@ class live_dataTest
         Pair<Integer, List<Integer>> aToB = dfs.getStart2End(from, to,1);
         int totalTime = start2End.getKey();
         String result = "";
-        if (totalTime / 3600 != 0) result = totalTime / 3600 + "ì‹œê°„ ";
+        if (totalTime / 3600 != 0) result = totalTime / 3600 + "½Ã°£ ";
         totalTime %= 3600;
-        if (totalTime / 60 != 0) result += totalTime / 60 + "ë¶„ ";
+        if (totalTime / 60 != 0) result += totalTime / 60 + "ºĞ ";
         totalTime %= 60;
-        result += totalTime + "ì´ˆ";
-        System.out.println(ConzonInfo.getConzonDict().get(from) + "ë¶€í„° " + ConzonInfo.getConzonDict().get(to) + "ê¹Œì§€ì˜ ê±¸ë¦¬ëŠ” ì‹œê°„: " + result);
+        result += totalTime + "ÃÊ";
+        System.out.println(ConzonInfo.getConzonDict().get(from).getName() + "ºÎÅÍ " + ConzonInfo.getConzonDict().get(to).getName() + "±îÁöÀÇ °É¸®´Â ½Ã°£: " + result);
         totalTime = start2End.getKey();
         int dist = 0;
         int cur = to;
@@ -53,10 +53,10 @@ class live_dataTest
         int toll = dfs.calcToll(value);
         dfs.printRoute(value);
         dfs.printLine(value);
-        System.out.println("toll = " + toll);
-        System.out.println("dist = " + dist / 1000);
-        System.out.println("ê°€ì¥ ì§§ì€ dist = " + aToB.getKey() / 1000);
-        System.out.println("texifee = " +( texifee + toll));
+        System.out.println("Åç°ÔÀÌÆ® ºñ¿ë = " + toll);
+        System.out.println("°Å¸® = " + dist / 1000);
+        System.out.println("ÅÃ½Ã ¿ä±İ = " +( texifee + toll) + "¿ø");
+        System.out.println("½Ã°£ °ü°è ¾øÀÌ °¡Àå ÂªÀº dist = " + aToB.getKey() / 1000);
     }
 
     @Test

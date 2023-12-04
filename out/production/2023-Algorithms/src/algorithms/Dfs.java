@@ -29,13 +29,13 @@ public class Dfs
         dijkstra(from, mode);
         int cur = to;
         List<Integer> line = new ArrayList<>();
-//        while (true)
-//        {
-//            line.add(cur);
-//            if (cur == from)
-//                break;
-//            cur = prev_loc[cur];
-//        }
+        while (true)
+        {
+            line.add(cur);
+            if (cur == from)
+                break;
+            cur = prev_loc[cur];
+        }
         return new Pair<>(dist[to], line);
     }
     public Pair<Integer, List<Integer>> getStart2EndWithAStar(int from, int to, int mode)
@@ -43,13 +43,13 @@ public class Dfs
         aStar(from, to);
         int cur = to;
         List<Integer> line = new ArrayList<>();
-//        while (true)
-//        {
-//            line.add(cur);
-//            if (cur == from)
-//                break;
-//            cur = prev_loc[cur];
-//        }
+        while (true)
+        {
+            line.add(cur);
+            if (cur == from)
+                break;
+            cur = prev_loc[cur];
+        }
         return new Pair<>(dist[to], line);
     }
 
@@ -122,6 +122,7 @@ public class Dfs
 
     public void printLine(List<Integer> line)
     {
+        System.out.print("노선 : ");
         int cur = -1;
         List<String> rst = new ArrayList<>();
 
@@ -144,6 +145,7 @@ public class Dfs
 
     public int calcToll(List<Integer> line)
     {
+        System.out.print("경로 : ");
         double cost = 44.3, rst = 0;
         for (int i = line.size() - 2; i >= 0; i--)
         {

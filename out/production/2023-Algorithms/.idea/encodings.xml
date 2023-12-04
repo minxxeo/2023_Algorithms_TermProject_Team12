@@ -5,5 +5,7 @@
     <file url="file://$PROJECT_DIR$/assets/conzon_info.csv" charset="EUC-KR" />
     <file url="file://$PROJECT_DIR$/assets/conzon_location.csv" charset="EUC-KR" />
     <file url="file://$PROJECT_DIR$/conzon_info.csv" charset="EUC-KR" />
+    <file url="file://$PROJECT_DIR$/src/algorithms/Dfs.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test/Algorithm_Termproject/DistanceTest.java" charset="EUC-KR" />
   </component>
 </project>
