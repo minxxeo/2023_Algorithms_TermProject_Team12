@@ -1,4 +1,4 @@
-# 2023 Algoritms 12조 TeamProject
+# 2023 Algorithms 12조 TeamProject
 ## A Star Highway Map
 This project is a map find the lowest cost which user input.   
 This project contains UI to use and JAVA code to compare algorithms performance.   
